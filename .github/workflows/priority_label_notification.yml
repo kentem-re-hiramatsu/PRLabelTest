@@ -2,7 +2,7 @@ name: Teams Notification
 
 on:
     pull_request:
-        types: [opened, edited, labeled]
+        types: [opened]
 
 jobs:
     notify:
