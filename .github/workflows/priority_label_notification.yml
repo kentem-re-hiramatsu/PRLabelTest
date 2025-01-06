@@ -10,4 +10,13 @@ jobs:
         steps:
             - name: Send custom message to Teams using Python
               if: ${{ contains(join(github.event.pull_request.labels.*.name, ','), '.最優先') || contains(join(github.event.pull_request.labels.*.name, ','), '.最優先(軽め)') }}
-              run: echo "Sending custom message to Teams..."
+              env:
+                  WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }}
+              run: |
+                  curl -H "Content-Type: application/json" \
+                       -X POST \
+                       -d '{
+                             "summary": "${{ github.event.workflow.name }}を開始しました",
+                             "text": "${{ github.event.workflow.name }}を開始しました"
+                           }' \
+                       $WEBHOOK_URL
