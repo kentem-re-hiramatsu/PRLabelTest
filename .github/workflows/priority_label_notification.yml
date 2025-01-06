@@ -29,13 +29,13 @@ jobs:
                               \"wrap\": true,
                               \"size\": \"Large\",
                               \"weight\": \"Bolder\"
+                              \"color\": \"Attention\"
                             },
                             {
                               \"type\": \"TextBlock\",
                               \"text\": \"${PR_TITLE}\",
                               \"wrap\": true,
                               \"size\": \"Large\",
-                              \"weight\": \"Bolder\"
                             }
                           ],
                           \"actions\": [
