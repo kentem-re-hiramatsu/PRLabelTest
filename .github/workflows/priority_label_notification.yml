@@ -6,7 +6,7 @@ on:
 
 jobs:
     notify:
-        if: ${{ (contains(github.event.pull_request.labels.*.name, '.最優先') || contains(github.event.pull_request.labels.*.name, '.最優先(軽め)')) && contains(github.event.pull_request.title, '.FE') }}
+        if: ${{ (contains(github.event.pull_request.labels.*.name, '.最優先') || contains(github.event.pull_request.labels.*.name, '.最優先 (軽め)')) }}
         runs-on: ubuntu-latest
         steps:
             - name: Send notification to Teams
