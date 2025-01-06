@@ -11,12 +11,12 @@ jobs:
             - name: Send custom message to Teams using Python
               if: ${{ contains(join(github.event.pull_request.labels.*.name, ','), '.最優先') || contains(join(github.event.pull_request.labels.*.name, ','), '.最優先(軽め)') }}
               env:
-                  WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }}
+                  WEBHOOK_URL: $https://kentem.webhook.office.com/webhookb2/3596119d-f191-4da2-8998-e9cf12c2cfb0@a5d1e37f-5f76-475e-8278-441b98d2aae5/IncomingWebhook/0e4ad45552074242b5020fcacd0bfd0b/a2df36bf-dd5e-403a-ad44-2fceb435a611/V286jrr_47l_uauxIxOqTJoLYQCe-CRCs018KVJRvdlLg1
               run: |
                   curl -H "Content-Type: application/json" \
                        -X POST \
                        -d '{
-                             "summary": "${{ github.event.workflow.name }}を開始しました",
-                             "text": "${{ github.event.workflow.name }}を開始しました"
+                             "summary": "$https://kentem.webhook.office.com/webhookb2/3596119d-f191-4da2-8998-e9cf12c2cfb0@a5d1e37f-5f76-475e-8278-441b98d2aae5/IncomingWebhook/0e4ad45552074242b5020fcacd0bfd0b/a2df36bf-dd5e-403a-ad44-2fceb435a611/V286jrr_47l_uauxIxOqTJoLYQCe-CRCs018KVJRvdlLg1を開始しました",
+                             "text": "$https://kentem.webhook.office.com/webhookb2/3596119d-f191-4da2-8998-e9cf12c2cfb0@a5d1e37f-5f76-475e-8278-441b98d2aae5/IncomingWebhook/0e4ad45552074242b5020fcacd0bfd0b/a2df36bf-dd5e-403a-ad44-2fceb435a611/V286jrr_47l_uauxIxOqTJoLYQCe-CRCs018KVJRvdlLg1を開始しました"
                            }' \
                        $WEBHOOK_URL
