@@ -6,6 +6,7 @@ on:
 
 jobs:
     notify:
+        if: ${{ contains(github.event.pull_request.labels.*.name, '.最優先') }}
         runs-on: ubuntu-latest
         steps:
             - name: Send notification to Teams
