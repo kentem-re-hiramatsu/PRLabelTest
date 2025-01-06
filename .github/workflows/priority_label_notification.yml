@@ -8,51 +8,6 @@ jobs:
     notify:
         runs-on: ubuntu-latest
         steps:
-            - name: Set up Python
-              uses: actions/setup-python@v4
-              with:
-                  python-version: '3.x'
-
-            - name: Install requests library
-              run: |
-                  python -m pip install requests
-
             - name: Send custom message to Teams using Python
               if: ${{ contains(join(github.event.pull_request.labels.*.name, ','), '.最優先') || contains(join(github.event.pull_request.labels.*.name, ','), '.最優先(軽め)') }}
-              run: |
-                  import requests
-                  import json
-
-                  webhook_url = 'https://prod-24.japaneast.logic.azure.com:443/workflows/b41994e7fd4e4f13aca10ed7d9248884/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=iXLpneNmROcpjwkX3YY4u6y88Qqr_JKa9Ek-T9ujjmg'
-
-                  message = {
-                    "attachments": [
-                      {
-                        "contentType": "application/vnd.microsoft.card.adaptive",
-                        "content": {
-                          "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-                          "type": "AdaptiveCard",
-                          "version": "1.2",
-                          "body": [
-                            {
-                              "type": "TextBlock",
-                              "text": "## Workflow経由のTeamsへの通知テストです。\n\n* 通知の詳細1です。\n* 通知の詳細2です。",
-                              "wrap": True,
-                              "markdown": True
-                            }
-                          ]
-                        }
-                      }
-                    ]
-                  }
-
-                  response = requests.post(
-                      url=webhook_url,
-                      data=json.dumps(message),
-                      headers={'Content-Type': 'application/json'}
-                  )
-
-                  if response.status_code == 200 or response.status_code == 202:
-                      print("メッセージが送信されました")
-                  else:
-                      print(f"エラーが発生しました: {response.status_code}, {response.text}")
+              run:
