@@ -8,18 +8,9 @@ jobs:
     notify:
         runs-on: ubuntu-latest
         steps:
-            - name: Get OAuth Token
-              id: get_token
-              run: |
-                  curl -X POST -H "Content-Type: application/x-www-form-urlencoded" \
-                  -d 'grant_type=client_credentials&client_id=<CLIENT_ID>&client_secret=<CLIENT_SECRET>&scope=https://service.flow.microsoft.com/.default' \
-                  https://login.microsoftonline.com/<TENANT_ID>/oauth2/v2.0/token \
-                  -o token.json
-                  echo "::set-output name=token::$(jq -r .access_token token.json)"
-
             - name: Send notification to Teams
               run: |
-                  curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer ${{ steps.get_token.outputs.token }}" \
+                  curl -X POST -H "Content-Type: application/json" \
                   -d '{
                     "attachments": [
                       {
@@ -40,4 +31,4 @@ jobs:
                       }
                     ]
                   }' \
-                  https://prod-24.japaneast.logic.azure.com:443/workflows/b41994e7fd4e4f13aca10ed7d9248884/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=iXLpneNmROcpjwkX3YY4u6y88Qqr_JKa9Ek-T9ujjmg
+                  "https://prod-24.japaneast.logic.azure.com:443/workflows/b41994e7fd4e4f13aca10ed7d9248884/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=iXLpneNmROcpjwkX3YY4u6y88Qqr_JKa9Ek-T9ujjmg"
