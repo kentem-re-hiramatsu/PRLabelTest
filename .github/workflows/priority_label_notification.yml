@@ -8,15 +8,51 @@ jobs:
     notify:
         runs-on: ubuntu-latest
         steps:
+            - name: Set up Python
+              uses: actions/setup-python@v4
+              with:
+                  python-version: '3.x'
+
+            - name: Install requests library
+              run: |
+                  python -m pip install requests
+
             - name: Send custom message to Teams using Python
               if: ${{ contains(join(github.event.pull_request.labels.*.name, ','), '.最優先') || contains(join(github.event.pull_request.labels.*.name, ','), '.最優先(軽め)') }}
-              env:
-                  WEBHOOK_URL: $https://kentem.webhook.office.com/webhookb2/3596119d-f191-4da2-8998-e9cf12c2cfb0@a5d1e37f-5f76-475e-8278-441b98d2aae5/IncomingWebhook/0e4ad45552074242b5020fcacd0bfd0b/a2df36bf-dd5e-403a-ad44-2fceb435a611/V286jrr_47l_uauxIxOqTJoLYQCe-CRCs018KVJRvdlLg1
               run: |
-                  curl -H "Content-Type: application/json" \
-                       -X POST \
-                       -d '{
-                             "summary": "$https://kentem.webhook.office.com/webhookb2/3596119d-f191-4da2-8998-e9cf12c2cfb0@a5d1e37f-5f76-475e-8278-441b98d2aae5/IncomingWebhook/0e4ad45552074242b5020fcacd0bfd0b/a2df36bf-dd5e-403a-ad44-2fceb435a611/V286jrr_47l_uauxIxOqTJoLYQCe-CRCs018KVJRvdlLg1を開始しました",
-                             "text": "$https://kentem.webhook.office.com/webhookb2/3596119d-f191-4da2-8998-e9cf12c2cfb0@a5d1e37f-5f76-475e-8278-441b98d2aae5/IncomingWebhook/0e4ad45552074242b5020fcacd0bfd0b/a2df36bf-dd5e-403a-ad44-2fceb435a611/V286jrr_47l_uauxIxOqTJoLYQCe-CRCs018KVJRvdlLg1を開始しました"
-                           }' \
-                       $WEBHOOK_URL
+                  import requests
+                  import json
+
+                  webhook_url = 'https://prod-24.japaneast.logic.azure.com:443/workflows/b41994e7fd4e4f13aca10ed7d9248884/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=iXLpneNmROcpjwkX3YY4u6y88Qqr_JKa9Ek-T9ujjmg'
+
+                  message = {
+                    "attachments": [
+                      {
+                        "contentType": "application/vnd.microsoft.card.adaptive",
+                        "content": {
+                          "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                          "type": "AdaptiveCard",
+                          "version": "1.2",
+                          "body": [
+                            {
+                              "type": "TextBlock",
+                              "text": "## Workflow経由のTeamsへの通知テストです。\n\n* 通知の詳細1です。\n* 通知の詳細2です。",
+                              "wrap": True,
+                              "markdown": True
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+
+                  response = requests.post(
+                      url=webhook_url,
+                      data=json.dumps(message),
+                      headers={'Content-Type': 'application/json'}
+                  )
+
+                  if response.status_code == 200 or response.status_code == 202:
+                      print("メッセージが送信されました")
+                  else:
+                      print(f"エラーが発生しました: {response.status_code}, {response.text}")
