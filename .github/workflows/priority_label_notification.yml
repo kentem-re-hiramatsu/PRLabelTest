@@ -29,7 +29,6 @@ jobs:
                               \"wrap\": true,
                               \"size\": \"Large\",
                               \"weight\": \"Bolder\"
-                              \"color\": \"Attention\"
                             },
                             {
                               \"type\": \"TextBlock\",
