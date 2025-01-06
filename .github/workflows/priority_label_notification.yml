@@ -10,6 +10,8 @@ jobs:
         steps:
             - name: Send notification to Teams
               run: |
+                  PR_TITLE="${{ github.event.pull_request.title }}"
+                  PR_URL="${{ github.event.pull_request.html_url }}"
                   curl -X POST -H "Content-Type: application/json" \
                   -d '{
                     "attachments": [
@@ -22,7 +24,7 @@ jobs:
                           "body": [
                             {
                               "type": "TextBlock",
-                              "text": "## Workflow経由のTeamsへの通知テストです。\n\n* 通知の詳細1です。\n* 通知の詳細2です。",
+                              "text": "## PR優先タグ通知(テスト)\n\n* PR題名: '"$PR_TITLE"'\n* PRリンク: '"$PR_URL"'\n*",
                               "wrap": true,
                               "markdown": true
                             }
