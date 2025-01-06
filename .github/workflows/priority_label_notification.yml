@@ -11,5 +11,24 @@ jobs:
             - name: Send notification to Teams
               run: |
                   curl -X POST -H "Content-Type: application/json" \
-                  -d '{"text": "A PR with a priority label has been created: ${{ github.event.pull_request.html_url }}"}' \
+                  -d '{
+                    "attachments": [
+                      {
+                        "contentType": "application/vnd.microsoft.card.adaptive",
+                        "content": {
+                          "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                          "type": "AdaptiveCard",
+                          "version": "1.2",
+                          "body": [
+                            {
+                              "type": "TextBlock",
+                              "text": "## Workflow経由のTeamsへの通知テストです。\n\n* 通知の詳細1です。\n* 通知の詳細2です。",
+                              "wrap": true,
+                              "markdown": true
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }' \
                   https://prod-24.japaneast.logic.azure.com:443/workflows/b41994e7fd4e4f13aca10ed7d9248884/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=iXLpneNmROcpjwkX3YY4u6y88Qqr_JKa9Ek-T9ujjmg
