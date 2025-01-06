@@ -10,4 +10,4 @@ jobs:
         steps:
             - name: Send custom message to Teams using Python
               if: ${{ contains(join(github.event.pull_request.labels.*.name, ','), '.最優先') || contains(join(github.event.pull_request.labels.*.name, ','), '.最優先(軽め)') }}
-              run:
+              run: echo "Sending custom message to Teams..."
