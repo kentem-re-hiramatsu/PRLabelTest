@@ -1,0 +1,19 @@
+name: Priority Label Notification
+
+on:
+    pull_request:
+        types: [opened, labeled]
+
+jobs:
+    notify:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Send notification to Teams
+              if: ${{ contains(join(github.event.pull_request.labels.*.name, ','), '.最優先') || contains(join(github.event.pull_request.labels.*.name, ','), '.最優先(軽め)') }}
+              run: |
+                  curl -H "Content-Type: application/json" \
+                       -d '{
+                             "text": "A PR with a priority label has been created: ${{ github.event.pull_request.html_url }}",
+                             "title": "テスト配信",
+                           }' \
+                       ${{ secrets.TEAMS_WEBHOOK_URL }}
